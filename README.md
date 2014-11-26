@@ -3,7 +3,7 @@
 
 #ikiwiki with bootstrap 3 theme
 
-This cookbook deploys ikiwiki _(the best wiki ever!)_ as well as the bootstrap 3 theme based on [Twitter's bootstrap CSS framework](http://getbootstrap.com/)..  Ikiwiki is a wiki backed by a git repository that updates on commits and uses markdown!  Ikiwiki also comes with a clean web interface based on Twitter's Bootstrap 3 for graphical administration and editing.
+This cookbook deploys ikiwiki _(the best wiki ever!)_ as well as the bootstrap 3 theme based on [Twitter's bootstrap CSS framework](http://getbootstrap.com/).  Ikiwiki is a wiki backed by a git repository that updates on commits and uses markdown!  Ikiwiki also comes with a clean web interface based on Twitter's Bootstrap 3 for graphical administration and editing.  This cookbook deploys ikiwiki in a way that is very similar to the Github wiki but with more features.
 
 
 Requirements
