@@ -13,12 +13,15 @@ yum-epel
 Attributes
 ----------
 
+
+```
 ['ikiwiki']['wikiName'] = 'ikiWiki'
 ['ikiwiki']['wikiNameShort'] = 'ikiWiki'
 ['ikiwiki']['adminEmail'] = 'admin@mysite.com'
 ['ikiwiki']['siteUrl'] = 'http://wiki.mysite.com'
 ['ikiwiki']['wikiAdmin'] = 'ikiwiki'
 ['ikiwiki']['wikiPass'] = 'ikiwiki'
+```
 
 Usage
 -----
