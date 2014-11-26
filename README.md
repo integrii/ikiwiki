@@ -30,7 +30,7 @@ Usage
 - Add to your run_list 
 - After execution put your company logo at ``/var/www/html/logo.png`` on the wiki server
 
-A user named ikiwiki will be created, apache will be installed and a wiki will be hosted at **/var/www/html** with a git repo at ``/home/ikiwiki/yourwikiname.git``.  If you want to clone that directory, you will need to setup an authorized_keys file at /home/ikiwiki/.ssh/authorized_keys with your public keys in it and do your clone as ``git clone ikiwiki@ikiwikiServer:wikiNameShort.git``.
+A user named ikiwiki will be created, apache will be installed and a wiki will be hosted at **/var/www/ikiwiki** with a git repo at ``/home/ikiwiki/yourwikiname.git``.  If you want to clone that directory, you will need to setup an authorized_keys file at /home/ikiwiki/.ssh/authorized_keys with your public keys in it.  You will then do your ``git clone`` as ``git clone ikiwiki@ikiwikiServer:wikiNameShort.git``.
 
 Thanks
 ------
