@@ -7,8 +7,8 @@ A user named ikiwiki will be created, apache will be installed and a wiki will b
 
 Requirements
 ------------
-Centos 6+
-yum-epel
+- Centos 6+
+- yum-epel
 
 Attributes
 ----------
@@ -28,6 +28,10 @@ Usage
 Make sure to setup all attributes above before running your cookbook or else it will initialize with the wrong values that wont change! 
 Add to your run_list 
 After execution put your company logo at ``/var/www/html/logo.png`` on the wiki server
+
+Thanks
+------
+Thanks to the author of [ikiwiki bootstrap 3](https://github.com/ramseydsilva/ikiwiki-bootstrap-theme) and of course [ikiwiki](https://ikiwiki.info/)!
 
 Contributing
 ------------
