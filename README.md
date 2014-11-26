@@ -1,4 +1,4 @@
-![ikiwiki chef cookbook](ikiwiki-chef.png)
+![ikiwiki chef cookbook](https://raw.githubusercontent.com/integrii/ikiwiki/master/ikiwiki-chef.png)
 
 
 #ikiwiki with bootstrap 3 theme
