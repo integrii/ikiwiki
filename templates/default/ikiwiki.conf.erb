@@ -1,0 +1,14 @@
+<VirtualHost *:80>                                                                       
+    ServerAdmin <%= @adminEmail %>                                                       
+    ServerName <%= @siteUrl %>                                                           
+    ServerAlias <%= @siteUrl %>                                                          
+                                                                                         
+    DocumentRoot /var/www/ikiwiki
+    ErrorLog /var/log/httpd/error_log.log                                                
+    CustomLog /var/log/httpd/access_log.log combined                                     
+                                                                                         
+    AddHandler cgi-script .cgi                                                           
+    Options FollowSymLinks +ExecCGI                                                      
+    ErrorDocument 404 /cgi-bin/ikiwiki.cgi                                               
+                                                                                         
+</VirtualHost>               
