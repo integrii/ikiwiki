@@ -34,6 +34,19 @@ A user named ikiwiki will be created, apache will be installed and a wiki will b
 
 Ikiwiki has lots of [plugins](https://ikiwiki.info/plugins/) that you can install.  Simply edit your ``/home/ikiwiki/setup.settings`` file to enable them and then run ``ikiwiki --setup /home/ikiwiki/ikiwiki.settings`` to run a rebuild on the wiki.
 
+These plugins are enabled by this cookbook but can be disabled easily via the web UI settings page:
+- color
+- attachment
+- addtag
+- hilight
+- img
+- newpage
+- notifyemail
+- linkmap
+- relativedate
+- remove
+- heading anchors
+
 Thanks
 ------
 Thanks to the author of [ikiwiki bootstrap 3](https://github.com/ramseydsilva/ikiwiki-bootstrap-theme) and of course [ikiwiki](https://ikiwiki.info/)!

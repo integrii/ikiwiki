@@ -30,6 +30,16 @@ end
 package "unzip" do
   action 'install'
 end
+package "perl-Mail-Sendmail" do
+  action 'install'
+  ignore_failure true
+end
+package "ImageMagick-perl" do
+  action 'install'
+end
+package "graphviz-perl" do
+  action 'install'
+end
 
 # setup ikiwiki user
 user "ikiwiki" do
@@ -93,7 +103,7 @@ end
 # place download theme zip on server
 cookbook_file "bootstrap-theme.zip" do
   path "/tmp/bootstrap-theme.zip"
-  action :create_if_missing
+  action 'create'
   mode 0775
   owner 'ikiwiki'
   group 'ikiwiki'
@@ -102,8 +112,8 @@ end
 
 # unzip bootstrap theme
 execute "install bootstrap 3 theme" do
-  command "unzip /tmp/bootstrap-theme.zip;mv ikiwiki-bootstrap-theme-master bootstrap-theme"
-  action :run
+  command "unzip -o /tmp/bootstrap-theme.zip;mv ikiwiki-bootstrap-theme-master bootstrap-theme"
+  action 'run'
   cwd '/home/ikiwiki'
   creates '/home/ikiwiki/bootstrap-theme'
   not_if { node.attribute?("ikiwiki-setup-complete") }
@@ -134,6 +144,16 @@ EOH
   #returns 255
   environment 'HOME' => "/home/ikiwiki"
   notifies "create", "ruby_block[ikiwiki-setup]", :immediately
+  not_if { node.attribute?("ikiwiki-setup-complete") }
+end
+
+# place download theme zip on server
+cookbook_file "logo.png" do
+  path "/var/www/ikiwiki/logo.png"
+  action 'create'
+  mode 0775
+  owner 'ikiwiki'
+  group 'ikiwiki'
   not_if { node.attribute?("ikiwiki-setup-complete") }
 end
 

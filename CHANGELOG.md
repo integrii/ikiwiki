@@ -1,5 +1,20 @@
 ikiwiki CHANGELOG
 =================
+1.1.0
+-----
+Added more default ikiwiki plugins and packages required by them:
+- color
+- attachment
+- addtag
+- hilight
+- img
+- newpage
+- notifyemail
+- linkmap
+- relativedate
+- remove
+- heading anchors
+
 
 1.0.3
 -----
