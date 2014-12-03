@@ -83,18 +83,6 @@ file "/etc/httpd/conf.d/welcome.conf" do
   action 'delete'
 end
 
-# Install ikiwiki site config file
-template "/etc/httpd/conf.d/ikiwiki.conf" do
-  source "ikiwiki.conf.erb"
-  mode '0755'
-  owner 'apache'
-  group 'apache'
-  variables({
-     'adminEmail' => node['ikiwiki']['adminEmail'],
-     'siteUrl' => node['ikiwiki']['siteUrl']
-  })
-end
-
 # Install httpd config file
 template "/etc/httpd/conf/httpd.conf" do
   source "httpd.conf.erb"
