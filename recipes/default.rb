@@ -40,6 +40,9 @@ end
 package "graphviz-perl" do
   action 'install'
 end
+package "perl-XML-Writer" do
+  action 'install'
+end
 
 # setup ikiwiki user
 user "ikiwiki" do
