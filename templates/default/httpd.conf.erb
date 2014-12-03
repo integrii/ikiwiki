@@ -317,6 +317,14 @@ DocumentRoot "/var/www/ikiwiki"
 #
 <Directory "/var/www/ikiwiki">
 
+    <% if node['ikiwiki']['passworded'] == true -%>
+    AuthType Basic
+    AuthName "PAM Authentication"
+    AuthBasicProvider external
+    AuthExternal pwauth
+    require valid-user
+    <% end -%>
+
     ErrorDocument 404 /cgi-bin/ikiwiki.cgi
 #
 # Possible values for the Options directive are "None", "All",
@@ -991,7 +999,7 @@ BrowserMatch "^Dreamweaver-WebDAV-SCM1" redirect-carefully
 #
 # Use name-based virtual hosting.
 #
-NameVirtualHost *:80
+#NameVirtualHost *:80
 #
 # NOTE: NameVirtualHost cannot be used without a port specifier 
 # (e.g. :80) if mod_ssl is being used, due to the nature of the

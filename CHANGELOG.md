@@ -1,5 +1,9 @@
 ikiwiki CHANGELOG
 =================
+1.2.0
+-----
+Added support for password auth and made some fixes for packages required by some plugins
+
 1.1.0
 -----
 Added more default ikiwiki plugins and packages required by them:

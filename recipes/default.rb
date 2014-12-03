@@ -43,6 +43,18 @@ end
 package "perl-XML-Writer" do
   action 'install'
 end
+package "mod_auth_pam" do
+  action 'install'
+end
+package "mod_auth_shadow" do
+  action 'install'
+end
+package "mod_authz_external" do
+  action 'install'
+end
+package "pwauth" do
+  action 'install'
+end
 
 # setup ikiwiki user
 user "ikiwiki" do

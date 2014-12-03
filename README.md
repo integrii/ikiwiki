@@ -22,6 +22,7 @@ Attributes
 ['ikiwiki']['siteUrl'] = 'http://wiki.mysite.com'
 ['ikiwiki']['wikiAdmin'] = 'ikiwiki'
 ['ikiwiki']['wikiPass'] = 'ikiwiki'
+['ikiwiki']['passworded'] = false
 ```
 
 Usage
@@ -46,6 +47,8 @@ These plugins are enabled by this cookbook but can be disabled easily via the we
 - relativedate
 - remove
 - heading anchors
+
+If the passworded attribute is set to true, the wiki will require authentication from a user on the system that PAM can auth against.  It will not allow system users like root.
 
 Thanks
 ------
