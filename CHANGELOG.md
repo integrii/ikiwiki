@@ -1,5 +1,9 @@
 ikiwiki CHANGELOG
 =================
+1.2.1
+-----
+Package name typo fix
+
 1.2.0
 -----
 Added support for password auth and made some fixes for packages required by some plugins

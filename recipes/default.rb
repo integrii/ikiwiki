@@ -49,7 +49,7 @@ end
 package "mod_auth_shadow" do
   action 'install'
 end
-package "mod_authz_external" do
+package "mod_authnz_external" do
   action 'install'
 end
 package "pwauth" do
