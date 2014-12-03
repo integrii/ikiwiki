@@ -291,6 +291,7 @@ UseCanonicalName Off
 #
 DocumentRoot "/var/www/ikiwiki"
 
+
 #
 # Each directory to which Apache has access can be configured with respect
 # to which services and features are allowed and/or disabled in that
@@ -316,6 +317,7 @@ DocumentRoot "/var/www/ikiwiki"
 #
 <Directory "/var/www/ikiwiki">
 
+    ErrorDocument 404 /cgi-bin/ikiwiki.cgi
 #
 # Possible values for the Options directive are "None", "All",
 # or any combination of:
@@ -795,7 +797,7 @@ AddType application/x-pkcs7-crl    .crl
 # To use CGI scripts outside of ScriptAliased directories:
 # (You will also need to add "ExecCGI" to the "Options" directive.)
 #
-#AddHandler cgi-script .cgi
+AddHandler cgi-script .cgi
 
 #
 # For files that include their own HTTP headers:
