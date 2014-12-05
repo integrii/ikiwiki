@@ -177,6 +177,16 @@ cookbook_file "search-result.tmpl" do
   not_if { node.attribute?("ikiwiki-setup-complete") }
 end
 
+# place fixed page template (search form shows now!)
+cookbook_file "page.tmpl" do
+  path "/home/ikiwiki/bootstrap-theme/page.tmpl"
+  action 'create'
+  mode 0644
+  owner 'root'
+  group 'root'
+  not_if { node.attribute?("ikiwiki-setup-complete") }
+end
+
 
 # set permissions in /etc/ikiwiki dir to ikiwiki
 execute "chown a bunch of stuff to ikiwiki" do
