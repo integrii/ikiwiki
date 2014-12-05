@@ -132,7 +132,7 @@ end
 
 # filetypes config fix for highlight
 cookbook_file "filetypes.conf" do
-  path "/etc/filetypes.conf"
+  path "/etc/highlight/filetypes.conf"
   action 'create'
   mode 0775
   owner 'root'
