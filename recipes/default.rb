@@ -55,6 +55,12 @@ end
 package "pwauth" do
   action 'install'
 end
+package "perl-DBD-SQLite2" do
+  action 'install'
+end
+package "perl-DBD-SQLite" do
+  action 'install'
+end
 
 
 # filetypes config fix for highlight
