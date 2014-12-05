@@ -1,5 +1,10 @@
 ikiwiki CHANGELOG
 =================
+1.3.0
+-----
+- Added full text search that is enabled by default
+- Added highlight plugin
+
 1.2.1
 -----
 Package name typo fix
