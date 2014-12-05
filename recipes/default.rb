@@ -56,6 +56,16 @@ package "pwauth" do
   action 'install'
 end
 
+
+# filetypes config fix for highlight
+cookbook_file "sqlite_search.pm" do
+  path "/usr/share/perl5/vendor_perl/IkiWiki/Plugin/sqlite_search.pm"
+  action 'create'
+  mode 0775
+  owner 'root'
+  group 'ikiwiki'
+end
+
 # setup ikiwiki user
 user "ikiwiki" do
   home '/home/ikiwiki'
@@ -103,6 +113,26 @@ template "/etc/httpd/conf/httpd.conf" do
   group 'apache'
 end
 
+
+
+# setup dir for highlight filetypes config
+directory "/etc/highlight" do
+  owner 'root'
+  group 'ikiwiki'
+  mode '0775'
+  action 'create'
+  recursive true
+end
+
+# filetypes config fix for highlight
+cookbook_file "filetypes.conf" do
+  path "/etc/filetypes.conf"
+  action 'create'
+  mode 0775
+  owner 'root'
+  group 'ikiwiki'
+end
+
 # place download theme zip on server
 cookbook_file "bootstrap-theme.zip" do
   path "/tmp/bootstrap-theme.zip"
@@ -119,6 +149,25 @@ execute "install bootstrap 3 theme" do
   action 'run'
   cwd '/home/ikiwiki'
   creates '/home/ikiwiki/bootstrap-theme'
+  not_if { node.attribute?("ikiwiki-setup-complete") }
+end
+
+# place modified search pages for sqlite_search plugin
+cookbook_file "search-result-form.tmpl" do
+  path "/home/ikiwiki/bootstrap-theme/search-result-form.tmpl"
+  action 'create'
+  mode 0644
+  owner 'root'
+  group 'root'
+  not_if { node.attribute?("ikiwiki-setup-complete") }
+end
+
+cookbook_file "search-result.tmpl" do
+  path "/home/ikiwiki/bootstrap-theme/search-result.tmpl"
+  action 'create'
+  mode 0644
+  owner 'root'
+  group 'root'
   not_if { node.attribute?("ikiwiki-setup-complete") }
 end
 

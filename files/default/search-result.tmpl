@@ -1,0 +1,15 @@
+<TMPL_IF NAME="result">
+  
+<ul>
+<TMPL_LOOP NAME="result">
+<li>
+ <h4><a href="<TMPL_VAR url>"><TMPL_VAR title></a></h4>
+ <div class="summary"><TMPL_VAR summary></div>
+ <div class="snippet">[ <TMPL_VAR snippet> ]</div>
+</li>
+</TMPL_LOOP>
+</ul>
+<TMPL_ELSE>
+<p class="error">No results were found.</p>
+
+</TMPL_IF>
