@@ -86,6 +86,7 @@ sub delete (@) {
         }
 	}
     return unless $url;
+    #warn "deleting $url\n";
     $fts->delete(url=>$url);
 }
 
@@ -130,6 +131,7 @@ package SQLiteFTS;
 use strict;
 use DBI;
 use Digest::SHA qw/sha1_hex/;
+use Encode qw/encode decode/;
 use locale;
 use utf8;
 
@@ -151,7 +153,17 @@ sub _init {
         {RaiseError=>1, AutoCommit=>1, sqlite_unicode=>1});
     $self->{dbh} = DBI->connect(@dsn) or die "Could not open database";
     $self->{dbh}->do('pragma encoding = "UTF-8"');
-    $self->_create_schema if $create;
+    unless ($create) {
+        eval {
+            die "table not found" unless $self->{dbh}->selectrow_array(
+                "select 1 from sqlite_master WHERE type='table' AND name='page'");
+        };
+        $create = 1 if $@;
+    }
+    if ($create) {
+        eval { $self->_create_schema };
+        warn "WARNING: Could not create schema: $@\n" if $@;
+    }
 }
 
 sub _create_schema {
@@ -167,7 +179,7 @@ sub _create_schema {
           unique (page_url),
           unique (page_sha1))",
         "create virtual table fts_page
-          using fts4 (
+          using fts3 (
             page_name,
             page_start,
             page_all)",
@@ -192,9 +204,18 @@ sub index {
     my $fts_name = my_lc($title);
     my $text = $rec{text} || '';
     utf8::upgrade($text);
-    my ($intro, $fts_start, $fts_rest) = $self->_munge_text($text);
     # Only changes affecting the search object matter, so don't use $text directly
+    my ($intro, $fts_start, $fts_rest) = $self->_munge_text($text);
+    $title = encode('utf-8', $title, Encode::FB_CROAK);
+    $fts_start = encode('utf-8', $fts_start, Encode::FB_CROAK);
+    $fts_rest = encode('utf-8', $fts_rest, Encode::FB_CROAK);
+    # Note that the SHA1 sum must be created while we're still dealing with
+    # octets, rather than characters
     my $sha1 = sha1_hex(join(':', $url, $title, $fts_start, $fts_rest));
+    # Try to avoid doubly encoded content
+    for ($url, $title, $fts_start, $fts_rest) {
+        $_ = decode('utf-8', encode('latin1', $_)) if /[ÃÂ]/;
+    }
     my ($page_id, $prev_sha1) = $dbh->selectrow_array(
         "select page_id, page_sha1 from page where page_url = ?",
         {}, $url);
@@ -202,6 +223,7 @@ sub index {
     return if $sha1 eq $prev_sha1;
     $dbh->begin_work;
     if ($page_id) {
+        #warn "updating $page_id\n";
         $dbh->do(
             "update page set page_title = ?, page_summary = ?, page_sha1 = ? where page_id = ?",
             {}, $title, $intro, $sha1, $page_id);
@@ -210,6 +232,7 @@ sub index {
             {}, $fts_name, $fts_start, $fts_start.' '.$fts_rest, $page_id); 
     }
     else {
+        #warn "inserting for $url\n";
         $dbh->do(
             "insert into page (page_url, page_title, page_summary, page_sha1) values (?, ?, ?, ?)",
             {}, $url, $title, $intro, $sha1);
@@ -277,7 +300,7 @@ sub _prepare_query {
         }
     }
     $lquery =~ s/ $//;
-    warn "returning query='$lquery'\n";
+    #warn "returning query='$lquery'\n";
     return $lquery;
 }
 
@@ -417,6 +440,11 @@ F<search-result.tmpl> must be copied to an appropriate location. This is
 normally in the F<templates/> folder of your project. The templates may of
 course be modified if you like.
 
+=item 4.
+
+B<Run ikiwiki -setup> on your F<*.setup> file. This creates the text index
+if needed and refreshes it otherwise.
+
 =back
 
 =head1 CAVEATS
@@ -439,7 +467,7 @@ certainly will not work well.
 
 On a related note, the locale under which the F<ikiwiki.cgi> program runs
 should use the UTF-8 character set -- at least if you have any non-ascii
-content which you wnat to be searcheable.
+content which you want to be searcheable.
 
 =item *
 
@@ -452,7 +480,7 @@ few thousand may be a problem.
 
 Baldur Kristinsson, L<http://github.com/bk>.
 
-This is version 0.2, November 2014.
+This is version 0.2, December 2014.
 
 =head1 COPYRIGHT AND LICENCE
 
