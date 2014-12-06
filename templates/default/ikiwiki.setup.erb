@@ -13,7 +13,7 @@ IkiWiki::Setup::Automator->import(
         cgi_wrapper => '/var/www/ikiwiki/ikiwiki.cgi',
         adminemail => '<%= @adminEmail %>',
         add_plugins => [qw{goodstuff websetup color attachment addtag img newpage notifyemail linkmap relativedate remove headinganchors sqlite_search highlight html5}],
-        disable_plugins => [qw{}],
+        disable_plugins => [qw{addtag newpage html5}],
         libdir => '/home/ikiwiki/.ikiwiki',
         templatedir => '/home/ikiwiki/bootstrap-theme',
         rss => 1,

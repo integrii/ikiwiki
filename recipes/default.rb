@@ -61,16 +61,13 @@ end
 package "perl-DBD-SQLite" do
   action 'install'
 end
-
-
-# filetypes config fix for highlight
-cookbook_file "sqlite_search.pm" do
-  path "/usr/share/perl5/vendor_perl/IkiWiki/Plugin/sqlite_search.pm"
-  action 'create'
-  mode 0775
-  owner 'root'
-  group 'ikiwiki'
+package "perl-Digest-SHA1" do
+  action 'install'
 end
+package "perl-Digest-SHA" do
+  action 'install'
+end
+
 
 # setup ikiwiki user
 user "ikiwiki" do
@@ -80,6 +77,13 @@ user "ikiwiki" do
   shell '/bin/bash'
 end
 
+# setup ikiwiki group
+group "ikiwiki" do
+  action 'create'
+  members "ikiwiki"
+  append true
+end
+
 # setup ikiwiki homedir
 directory "/home/ikiwiki" do
   owner 'ikiwiki'
@@ -87,6 +91,15 @@ directory "/home/ikiwiki" do
   mode '0775'
   action 'create'
   recursive true
+end
+
+# filetypes config fix for highlight
+cookbook_file "sqlite_search.pm" do
+  path "/usr/share/perl5/vendor_perl/IkiWiki/Plugin/sqlite_search.pm"
+  action 'create'
+  mode 0775
+  owner 'root'
+  group 'ikiwiki'
 end
 
 
@@ -187,6 +200,16 @@ cookbook_file "page.tmpl" do
   not_if { node.attribute?("ikiwiki-setup-complete") }
 end
 
+# place default logo in webroot
+cookbook_file "logo.png" do
+  path "/var/www/ikiwiki/logo.png"
+  action 'create'
+  mode 0775
+  owner 'ikiwiki'
+  group 'ikiwiki'
+  not_if { node.attribute?("ikiwiki-setup-complete") }
+end
+
 
 # set permissions in /etc/ikiwiki dir to ikiwiki
 execute "chown a bunch of stuff to ikiwiki" do
@@ -212,16 +235,6 @@ EOH
   #returns 255
   environment 'HOME' => "/home/ikiwiki"
   notifies "create", "ruby_block[ikiwiki-setup]", :immediately
-  not_if { node.attribute?("ikiwiki-setup-complete") }
-end
-
-# place download theme zip on server
-cookbook_file "logo.png" do
-  path "/var/www/ikiwiki/logo.png"
-  action 'create'
-  mode 0775
-  owner 'ikiwiki'
-  group 'ikiwiki'
   not_if { node.attribute?("ikiwiki-setup-complete") }
 end
 
