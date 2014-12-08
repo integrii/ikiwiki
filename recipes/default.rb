@@ -132,7 +132,23 @@ template "/etc/httpd/conf/httpd.conf" do
   group 'apache'
 end
 
+# setup dir for third party plugin inclusion
+directory "/home/ikiwiki/.ikiwiki/plugins" do
+  owner 'ikiwiki'
+  group 'ikiwiki'
+  mode '0775'
+  action 'create'
+  recursive true
+end
 
+# create a plugin for sqllite to get the setup to run initially without removing the plugin from the enabled plugins list
+cookbook_file "sqlite_search.pm" do
+  path "/home/ikiwiki/.ikiwiki/plugins/sqlite_search"
+  action 'create'
+  mode 0775
+  owner 'ikiwiki'
+  group 'ikiwiki'
+end
 
 # setup dir for highlight filetypes config
 directory "/etc/highlight" do
@@ -200,16 +216,6 @@ cookbook_file "page.tmpl" do
   not_if { node.attribute?("ikiwiki-setup-complete") }
 end
 
-# place default logo in webroot
-cookbook_file "logo.png" do
-  path "/var/www/ikiwiki/logo.png"
-  action 'create'
-  mode 0775
-  owner 'ikiwiki'
-  group 'ikiwiki'
-  not_if { node.attribute?("ikiwiki-setup-complete") }
-end
-
 
 # set permissions in /etc/ikiwiki dir to ikiwiki
 execute "chown a bunch of stuff to ikiwiki" do
@@ -232,11 +238,45 @@ EOH
   cwd "/home/ikiwiki"
   user "ikiwiki"
   group "ikiwiki"
-  #returns 255
+  # This returns 255 because the sqllite_plugin fails to load
+  # The plugin has to fail to load in order for it to stay enabled in the .settings config that is generated
+  returns [0, 255]
   environment 'HOME' => "/home/ikiwiki"
-  notifies "create", "ruby_block[ikiwiki-setup]", :immediately
+  notifies "create", "ruby_block[ikiwiki-setup]"
   not_if { node.attribute?("ikiwiki-setup-complete") }
 end
+
+
+# remove sqlite_search.pm file used in shim to get search working
+file "/home/ikiwiki/.ikiwiki/plugins/sqlite_search" do
+  action 'delete'
+end
+
+# Run ikiwiki --setup again for clean build. run against built setup file this time
+bash "ikiwiki --setup ikiwiki.settings" do
+code <<-EOH
+ikiwiki --setup ikiwiki.settings
+EOH
+  cwd "/home/ikiwiki"
+  user "ikiwiki"
+  group "ikiwiki"
+  # This returns 255 because the sqllite_plugin fails to load
+  # The plugin has to fail to load in order for it to stay enabled in the .settings config that is generated
+  returns [0, 255]
+  environment 'HOME' => "/home/ikiwiki"
+  not_if { node.attribute?("ikiwiki-setup-complete") }
+end
+
+# place default logo in webroot
+cookbook_file "logo.png" do
+  path "/var/www/ikiwiki/logo.png"
+  action 'create'
+  mode 0775
+  owner 'ikiwiki'
+  group 'ikiwiki'
+  not_if { node.attribute?("ikiwiki-setup-complete") }
+end
+
 
 # flag install as run
 ruby_block "ikiwiki-setup" do

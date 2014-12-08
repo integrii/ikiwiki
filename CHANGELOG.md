@@ -1,5 +1,9 @@
 ikiwiki CHANGELOG
 =================
+1.3.1
+-----
+- Various stability fixes and interface tweaks
+
 1.3.0
 -----
 - Added full text search that is enabled by default

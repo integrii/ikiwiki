@@ -130,6 +130,7 @@ package SQLiteFTS;
 
 use strict;
 use DBI;
+use DBD::SQLite; # For the version
 use Digest::SHA qw/sha1_hex/;
 use Encode qw/encode decode/;
 use locale;
@@ -169,6 +170,7 @@ sub _init {
 sub _create_schema {
     my $self = shift;
     my $dbh = $self->{dbh};
+    my $fts_v = $DBD::SQLite::VERSION >= 1.36 ? 'fts4' : 'fts3';
     my @sql = (
         "create table page (
           page_id integer primary key,
@@ -179,7 +181,7 @@ sub _create_schema {
           unique (page_url),
           unique (page_sha1))",
         "create virtual table fts_page
-          using fts3 (
+          using $fts_v (
             page_name,
             page_start,
             page_all)",
