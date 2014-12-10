@@ -100,6 +100,7 @@ cookbook_file "sqlite_search.pm" do
   mode 0775
   owner 'root'
   group 'ikiwiki'
+  not_if { node.attribute?("ikiwiki-setup-complete") }
 end
 
 

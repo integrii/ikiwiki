@@ -1,5 +1,9 @@
 ikiwiki CHANGELOG
 =================
+1.3.2
+-----
+- Fix for possible race condition
+
 1.3.1
 -----
 - Various stability fixes and interface tweaks
